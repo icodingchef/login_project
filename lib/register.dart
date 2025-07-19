@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:login_project/final_project.dart';
-import 'package:login_project/register.dart';
+import 'package:login_project/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -28,7 +27,7 @@ class _LoginState extends State<Login> {
                   height: 80,
                 ),
                 Image.asset(
-                      'images/codingchef3.png',
+                      'images/signup.png',
                       width: 150,
                       height: 150,
                     )
@@ -48,7 +47,7 @@ class _LoginState extends State<Login> {
                   height: 5,
                 ),
                 Text(
-                      "Welcome back!",
+                      "Welcome!",
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 20,
@@ -63,7 +62,7 @@ class _LoginState extends State<Login> {
                   height: 5,
                 ),
                 Text(
-                  "Sign in to continue",
+                  "Sign up to continue",
                   style: TextStyle(
                     color: Colors.grey[700],
                   ),
@@ -75,6 +74,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -96,6 +96,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -117,22 +118,16 @@ class _LoginState extends State<Login> {
                   onTap: () async {
                     try {
                       final newUser = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
+                          .createUserWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text,
                           );
                       if (newUser.user != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FinalProject(),
-                          ),
-                        );
                         emailController.clear();
                         passwordController.clear();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("로그인에 성공했습니다"),
+                            content: Text("회원가입에 성공했습니다"),
                             backgroundColor: Colors.blue,
                           ),
                         );
@@ -164,7 +159,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Not a member?",
+                      "Already a member?",
                       style: TextStyle(color: Colors.grey[700]),
                     ).animate().slideX(
                       begin: -3,
@@ -175,11 +170,11 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Register()),
+                          MaterialPageRoute(builder: (context) => Login()),
                         );
                       },
                       child: Text(
-                        "Register now",
+                        "Login now",
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
